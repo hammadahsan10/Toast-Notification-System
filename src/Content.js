@@ -12,9 +12,9 @@ export default function Content() {
 
   //Initializng States
   const [toasts, setToasts] = useState([]);
-  const [likedList, setLikedList] = useState([]); 
-  const [dismissedIds, setDismissedIds] = useState(() => new Set()); 
-  const [loading, setLoading] = useState(true); 
+  const [likedList, setLikedList] = useState([]);
+  const [dismissedIds, setDismissedIds] = useState(() => new Set());
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch liked submissions on load
@@ -56,7 +56,7 @@ export default function Content() {
   const handleDismiss = useCallback((id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id)); // Remove dismissed toast from toasts
     setDismissedIds((prev) => new Set(prev).add(id)); // Add ID to dismissed set
-  }, []); 
+  }, []);
 
   // Delete from liked list (locally removal)
   const handleDeleteLiked = useCallback((id) => {
@@ -64,9 +64,9 @@ export default function Content() {
     const existing = JSON.parse(localStorage.getItem('formSubmissions')) || []; // Get existing liked submissions from localStorage
     const updated = existing.filter(item => item.id !== id); // Remove the item from storage based on id
     localStorage.setItem('formSubmissions', JSON.stringify(updated)); // Save updated list back to localStorage
-  }, []); 
+  }, []);
 
-  
+
   return (
     <Box>
       <Typography variant="h5" sx={{ mt: 3, mb: 2 }}>Liked Submissions</Typography>
@@ -114,7 +114,14 @@ export default function Content() {
               </>
             }
           >
-            New Submission: {toast.data.firstName} {toast.data.lastName}
+            <div>
+              <Typography component="span" fontWeight="bold">Name: </Typography>
+              {toast.data.firstName} {toast.data.lastName}
+            </div>
+            <div>
+              <Typography component="span" fontWeight="bold">Email: </Typography>
+              {toast.data.email}
+            </div>
           </Alert>
         </Snackbar>
       ))}
